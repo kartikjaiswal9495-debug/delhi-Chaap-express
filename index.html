@@ -304,7 +304,7 @@
 
     </div>
 
-    <!-- SCRIPT (With ultra fast 15ms Typewriter & Fixed Pop-up bypass Copy Feature) -->
+    <!-- SCRIPT (With ultra fast 15ms Typewriter & Super Fast Pop-up bypass Copy Feature) -->
     <script>
         const reviewData = {
             HINGLISH: {
@@ -617,7 +617,7 @@
 
         window.onload = generateReview;
 
-        // UPDATED: Fixed Pop-up Blocker Issue for Mobile Browsers
+        // UPDATED: Super Fast Redirect (300ms delay only)
         function copyToGoogle() {
             const text = document.getElementById('reviewText').innerText;
             const copyBtnContent = document.getElementById('copyBtnContent');
@@ -627,15 +627,16 @@
             navigator.clipboard.writeText(text).then(() => {
                 copyBtnContent.innerHTML = "Copied! Opening Google... ✔";
                 
+                // Delay reduced to just 300ms for instant feel
                 setTimeout(() => {
-                    // Mobile browser security bypass: Using window.location.href instead of window.open()
                     window.location.href = "https://search.google.com/local/writereview?placeid=ChIJo1dK-c4VrjsRkKY8HuJt9RU";
                     
+                    // Reset button appearance after returning
                     setTimeout(() => {
                         copyBtnContent.innerHTML = originalHTML;
-                    }, 1000);
+                    }, 500);
                     
-                }, 1300); // 1.3 sec ke baad redirect
+                }, 300); 
 
             }).catch(err => {
                 copyBtnContent.innerHTML = "Error copying. Try again ❌";
