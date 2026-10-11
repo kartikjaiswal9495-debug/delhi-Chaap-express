@@ -167,11 +167,13 @@
                 <span class="absolute bottom-[-10px] right-3 text-3xl text-[#C5A059] opacity-20 font-serif">"</span>
             </div>
 
-            <!-- Premium Animated Copy Button -->
+            <!-- Premium Animated Copy Button with Dynamic Content Span -->
             <div class="w-full flex gap-3 justify-center items-center">
                 <button onclick="copyToGoogle()" class="flex-1 bg-[#1C1C1C] text-[#C5A059] hover:bg-black hover:text-white hover:-translate-y-1 text-[13px] font-bold py-3.5 px-4 rounded-[14px] btn-glow flex items-center justify-center gap-2 active:scale-95 transition-all duration-300 border border-[#2A2A2A]">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
-                    Copy & Paste on Google
+                    <span id="copyBtnContent" class="flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                        Copy & Paste on Google
+                    </span>
                 </button>
                 
                 <button onclick="generateReview()" class="w-[52px] h-[52px] bg-[#1C1C1C] text-[#C5A059] hover:bg-black hover:text-white hover:-translate-y-1 rounded-[14px] btn-glow flex items-center justify-center active:scale-95 transition-all duration-300 flex-shrink-0 border border-[#2A2A2A]">
@@ -302,7 +304,7 @@
 
     </div>
 
-    <!-- SCRIPT (With ultra fast 15ms Typewriter) -->
+    <!-- SCRIPT (With ultra fast 15ms Typewriter & Pop-up less Copy Feature) -->
     <script>
         const reviewData = {
             HINGLISH: {
@@ -615,14 +617,36 @@
 
         window.onload = generateReview;
 
+        // NEW POP-UP LESS COPY FUNCTION
         function copyToGoogle() {
             const text = document.getElementById('reviewText').innerText;
+            const copyBtnContent = document.getElementById('copyBtnContent');
+            
+            // Store the original content to revert back later
+            const originalHTML = copyBtnContent.innerHTML;
+
             navigator.clipboard.writeText(text).then(() => {
-                alert("Review Copy Ho Gaya! Ab naye tab me Google khul raha hai...");
-                const googleReviewLink = "https://search.google.com/local/writereview?placeid=ChIJo1dK-c4VrjsRkKY8HuJt9RU";
-                window.open(googleReviewLink, "_blank");
+                // Change the button text immediately upon successful copy
+                copyBtnContent.innerHTML = "Copied! Opening Google... ✔";
+                
+                // Wait 1.5 seconds for the user to read the text, then open Google Maps
+                setTimeout(() => {
+                    const googleReviewLink = "https://search.google.com/local/writereview?placeid=ChIJo1dK-c4VrjsRkKY8HuJt9RU";
+                    window.open(googleReviewLink, "_blank");
+                    
+                    // Revert the button back to its original state after Google Maps opens
+                    setTimeout(() => {
+                        copyBtnContent.innerHTML = originalHTML;
+                    }, 1000);
+                    
+                }, 1500);
+
             }).catch(err => {
-                alert("Copy karne me dikkat aayi, kripya dobara try karein.");
+                // In case of an error copying to clipboard
+                copyBtnContent.innerHTML = "Error copying. Try again ❌";
+                setTimeout(() => {
+                    copyBtnContent.innerHTML = originalHTML;
+                }, 2000);
             });
         }
     </script>
